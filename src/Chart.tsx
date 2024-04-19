@@ -1,6 +1,6 @@
 import { useEffect } from "react";
+import * as JSC from "jscharting";
 
-import ChartJS from "chart.js/auto";
 import "./App.css";
 import { FormValue } from "./Form";
 
@@ -10,31 +10,47 @@ interface ChartProps {
 
 export const Chart = ({ values }: ChartProps) => {
   useEffect(() => {
-    const xValues = values.map((v) => v.title);
-    const yValues = values.map((v) => v.value);
-    const barColors = ["#b91d47", "#00aba9", "#2b5797", "#e8c3b9", "#1e7145"];
+    const points = values.map((v) => ({
+      name: v.title,
+      y: Number(v.value),
+    }));
 
-    const myChart = new ChartJS("myChart", {
-      type: "pie",
-      data: {
-        labels: xValues,
-        datasets: [
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let chart2: JSC.Chart;
+    setTimeout(() => {
+      chart2 = new JSC.Chart("myChart2", {
+        type: "column",
+        legend: {
+          template: "%value {%percentOfTotal:n1}% %icon %name",
+          position: "inside left bottom",
+        },
+        defaultSeries: {
+          type: "pie",
+          pointSelection: true,
+        },
+        defaultPoint: {
+          label: {
+            text: "<b>%name</b><br/>%yValue<br/>%percentOfTotal%",
+            placement: "outside",
+          },
+        },
+        series: [
           {
-            backgroundColor: barColors,
-            data: yValues,
+            name: "Countries",
+            points,
           },
         ],
-      },
+      });
     });
 
     return () => {
-      myChart.destroy();
+      chart2?.destroy();
     };
   }, [values]);
 
   return (
     <>
-      <canvas id="myChart" style={{ width: "100%", maxWidth: "600px" }} />
+      <div id="myChart2" style={{ width: "100%", minWidth: "600px", height: "600px" }} />
     </>
   );
 };
