@@ -15,7 +15,6 @@ export const Chart = ({ values }: ChartProps) => {
       y: Number(v.value),
     }));
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let chart2: JSC.Chart;
     setTimeout(() => {
       chart2 = new JSC.Chart("myChart2", {
@@ -28,6 +27,9 @@ export const Chart = ({ values }: ChartProps) => {
           type: "pie",
           pointSelection: true,
         },
+        defaultTooltip: {
+          enabled: false,
+        },
         defaultPoint: {
           label: {
             text: "<b>%name</b><br/>%yValue<br/>%percentOfTotal%",
@@ -36,7 +38,7 @@ export const Chart = ({ values }: ChartProps) => {
         },
         series: [
           {
-            name: "Countries",
+            name: "Assets",
             points,
           },
         ],
