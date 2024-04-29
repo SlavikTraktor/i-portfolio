@@ -1,14 +1,13 @@
 import { useState } from "react";
 import { uniqueId } from "lodash";
+import { countResValue } from "./helpers/countResValue";
 
-interface InputLineProps {
-  title: string;
-  value: string;
+type InputLineProps = Omit<FormValue, "id"> & {
   onDelete: () => void;
   onChange: (newValue: Omit<FormValue, "id">) => void;
-}
+};
 
-const InputLine = ({ title, value, onDelete, onChange }: InputLineProps) => {
+const InputLine = ({ title, value, resValue, onDelete, onChange }: InputLineProps) => {
   return (
     <div className="mb-2 flex">
       <input
@@ -27,6 +26,10 @@ const InputLine = ({ title, value, onDelete, onChange }: InputLineProps) => {
         value={value}
         onChange={(e) => onChange({ title, value: e.target.value })}
       />
+
+      <div className="border bg-slate-100 rounded mr-2 min-w-24 flex items-center px-3">
+        {resValue || value}
+      </div>
       <button onClick={onDelete}>x</button>
     </div>
   );
@@ -38,6 +41,7 @@ export interface FormValue {
   id: string;
   title: string;
   value: string;
+  resValue?: number;
 }
 
 interface FormProps {
@@ -69,6 +73,8 @@ export const Form = ({ onSubmit, defaultValues }: FormProps) => {
   const onChange = (id: string) => (newValue: Omit<FormValue, "id">) => {
     setValues((v) => {
       const inx = v.findIndex((v) => v.id === id);
+
+      newValue.resValue = countResValue(newValue.value);
 
       return [...v.slice(0, inx), { id, ...newValue }, ...v.slice(inx + 1)];
     });
