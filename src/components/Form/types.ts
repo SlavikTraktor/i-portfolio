@@ -3,4 +3,5 @@ export interface FormValue {
   title: string;
   value: string;
   resValue?: number;
+  oldValue?: string;
 }

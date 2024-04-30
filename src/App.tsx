@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./App.css";
-import { Form, FormValue } from "./Form";
-import { Chart } from "./Chart";
+import { Form, FormValue } from "./components/Form";
+import { ChartPage } from "./pages/ChartPage";
 
 function App() {
   const [submitted, setSubmitted] = useState(false);
@@ -13,12 +13,7 @@ function App() {
   };
 
   if (submitted) {
-    return (
-      <>
-        <Chart values={values || []} />
-        <button onClick={() => setSubmitted(false)}>Return</button>
-      </>
-    );
+    return <ChartPage values={values || []} onReturn={() => setSubmitted(false)} />;
   }
 
   return (

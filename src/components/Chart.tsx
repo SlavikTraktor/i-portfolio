@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import * as JSC from "jscharting";
 
-import "./App.css";
 import { FormValue } from "./Form";
 
 interface ChartProps {
