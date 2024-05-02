@@ -5,3 +5,8 @@ export interface FormValue {
   resValue?: number;
   oldValue?: string;
 }
+
+export interface SavedFormValues {
+  date: string;
+  values: FormValue[];
+}

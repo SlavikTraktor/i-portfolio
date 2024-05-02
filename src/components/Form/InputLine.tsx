@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { FormValue } from "./types";
+import { FormValue } from "../../types";
 
 type InputLineProps = FormValue & {
   onDelete: (id: string) => void;

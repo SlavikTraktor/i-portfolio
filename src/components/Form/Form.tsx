@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
 import { uniqueId } from "lodash";
 import { countResValue } from "../../helpers/countResValue";
-import { FormValue } from "./types";
+import { FormValue } from "../../types";
 import { emptyValue } from "./helpers";
 import { InputLine } from "./InputLine";
 

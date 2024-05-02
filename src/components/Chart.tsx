@@ -51,7 +51,7 @@ export const Chart = ({ values }: ChartProps) => {
 
   return (
     <>
-      <div id="myChart2" style={{ width: "100%", minWidth: "600px", height: "600px" }} />
+      <div id="myChart2" style={{ width: "100%", minWidth: "600px", height: "500px" }} />
     </>
   );
 };
