@@ -36,7 +36,7 @@ export const saveData = (values: FormValue[]) => {
   }
 };
 
-export const getLastSavedData = (): SavedFormValues => {
+export const getLastSavedData = (): SavedFormValues | undefined => {
   const values = findAllData();
 
   return values[values.length - 1];

@@ -6,9 +6,10 @@ type InputLineProps = FormValue & {
   onChange: (newValue: FormValue) => void;
 };
 
-export const InputLine = memo(({ id, title, value, resValue, onDelete, onChange, oldValue }: InputLineProps) => {
+export const InputLine = memo(({ onDelete, onChange, ...allValues }: InputLineProps) => {
+  const { id, title, value, resValue, oldValue } = allValues;
   const onUseOldValue = () => {
-    oldValue && onChange({ title, value: oldValue, id });
+    oldValue && onChange({ ...allValues, value: oldValue, id });
   };
 
   return (
@@ -19,7 +20,7 @@ export const InputLine = memo(({ id, title, value, resValue, onDelete, onChange,
         placeholder="Title"
         name="title"
         value={title}
-        onChange={(e) => onChange({ title: e.target.value, value, id })}
+        onChange={(e) => onChange({ ...allValues, title: e.target.value })}
       />
       <div className="border bg-slate-100 rounded min-w-24 flex items-center px-3">{oldValue}</div>
       <button className="border rounded py-1 px-3" onClick={onUseOldValue}>
@@ -31,7 +32,7 @@ export const InputLine = memo(({ id, title, value, resValue, onDelete, onChange,
         placeholder="Value"
         name="value"
         value={value}
-        onChange={(e) => onChange({ title, value: e.target.value, id })}
+        onChange={(e) => onChange({ ...allValues, value: e.target.value })}
       />
 
       <div className="border bg-slate-100 rounded min-w-24 flex items-center px-3">{resValue || value}</div>

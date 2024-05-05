@@ -1,42 +1,27 @@
-import { useCallback, useState } from "react";
-import { uniqueId } from "lodash";
-import { countResValue } from "../../helpers/countResValue";
+import { useCallback } from "react";
 import { FormValue } from "../../types";
 import { emptyValue } from "./helpers";
 import { InputLine } from "./InputLine";
 
-const valuesMock: FormValue[] = [
-  { id: uniqueId(), title: "SNP500", value: "1302", oldValue: "228322" },
-  { id: uniqueId(), title: "MSCI", value: "542" },
-  { id: uniqueId(), title: "AUR", value: "308" },
-];
-
 interface FormProps {
-  onSubmit: (v: FormValue[]) => void;
-  defaultValues?: FormValue[];
+  onSubmit?: (v: FormValue[]) => void;
+  onDelete?: (rowId: FormValue["id"]) => void;
+  onChange?: (newValues: FormValue[]) => void;
+  onRowUpdate?: (newValue: FormValue) => void;
+  values: FormValue[];
 }
 
-export const Form = ({ onSubmit, defaultValues }: FormProps) => {
-  const [values, setValues] = useState<FormValue[]>(defaultValues || valuesMock || [emptyValue()]);
-
+export const Form = ({ onSubmit, values, onChange, onRowUpdate, onDelete }: FormProps) => {
   const addNewValue = () => {
-    setValues((v) => [...v, emptyValue()]);
+    onChange?.([...values, emptyValue()]);
   };
 
-  const onDelete = useCallback((id: string) => {
-    setValues((v) => {
-      return v.filter((v) => v.id !== id);
-    });
+  const onDeleteInternal = useCallback((id: string) => {
+    onDelete?.(id);
   }, []);
 
-  const onChange = useCallback((newValue: FormValue) => {
-    setValues((v) => {
-      const inx = v.findIndex((v) => v.id === newValue.id);
-      newValue.resValue = countResValue(newValue.value);
-      v[inx] = newValue;
-
-      return [...v];
-    });
+  const onChageRow = useCallback((newValue: FormValue) => {
+    onRowUpdate?.(newValue);
   }, []);
 
   return (
@@ -49,13 +34,14 @@ export const Form = ({ onSubmit, defaultValues }: FormProps) => {
         <div>res</div>
         <div></div>
         {values.map((v) => (
-          <InputLine key={v.id} {...v} onDelete={onDelete} onChange={onChange} />
+          <InputLine key={v.id} {...v} onDelete={onDeleteInternal} onChange={onChageRow} />
         ))}
       </div>
 
       <div>
+        <button onClick={addNewValue}>Use previous</button>
         <button onClick={addNewValue}>Add new</button>
-        <button className="ml-2" onClick={() => onSubmit(values)}>
+        <button className="ml-2" onClick={() => onSubmit?.(values)}>
           Submit
         </button>
       </div>

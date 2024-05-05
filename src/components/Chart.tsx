@@ -11,7 +11,7 @@ export const Chart = ({ values }: ChartProps) => {
   useEffect(() => {
     const points = values.map((v) => ({
       name: v.title,
-      y: Number(v.value),
+      y: v.resValue,
     }));
 
     let chart2: JSC.Chart;
