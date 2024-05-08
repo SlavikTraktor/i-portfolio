@@ -16,6 +16,15 @@ export const Form = ({ onSubmit, values, onChange, onRowUpdate, onDelete }: Form
     onChange?.([...values, emptyValue()]);
   };
 
+  const usePreviousValues = () => {
+    const newValues = values.map((v) => ({
+      ...v,
+      value: v.oldValue || v.value,
+    }));
+
+    onChange?.(newValues);
+  };
+
   const onDeleteInternal = useCallback((id: string) => {
     onDelete?.(id);
   }, []);
@@ -39,8 +48,8 @@ export const Form = ({ onSubmit, values, onChange, onRowUpdate, onDelete }: Form
       </div>
 
       <div>
-        <button onClick={addNewValue}>Use previous</button>
-        <button onClick={addNewValue}>Add new</button>
+        <button onClick={usePreviousValues}>Use previous</button>
+        <button className="ml-2" onClick={addNewValue}>Add new</button>
         <button className="ml-2" onClick={() => onSubmit?.(values)}>
           Submit
         </button>
